@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+eFROM python:3.10-slim
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -18,4 +18,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8501
 
-CMD ["streamlit", "run", "app.py", "--server.port=10000", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "Ray-Gui.py", "--server.port=10000", "--server.address=0.0.0.0"]
