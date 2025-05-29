@@ -1,16 +1,21 @@
 import streamlit as st
 import textwrap
 
-st.set_page_config(page_title="Raysect Explorer", layout="wide")
+st.set_page_config(page_title="Raysect Interactive Explorer", layout="wide")
+
+st.markdown("""
+<style>
+section[data-testid='stSidebar'] {
+    background-color: #f0f2f6;
+}
+</style>
+""", unsafe_allow_html=True)
 
 st.title("🔬 Raysect Interactive Explorer")
-st.markdown("Explore core functionalities of Raysect through interactive examples.")
 
 # Define code snippets for different functionalities
 examples = {
-    "Define a Light Source": {
-        "description": "Create an emitting box using UniformSurfaceEmitter.",
-        "code": '''
+    "Define a Light Source": '''
 from raysect.primitive import Box
 from raysect.optical import World, Point3D
 from raysect.optical.material import UniformSurfaceEmitter
@@ -24,11 +29,8 @@ emitter = Box(
     material=UniformSurfaceEmitter(d65_white, 1.0),
     parent=world
 )
-'''
-    },
-    "Apply a Material": {
-        "description": "Apply a Lambertian material to a sphere.",
-        "code": '''
+''',
+    "Apply a Material": '''
 from raysect.primitive import Sphere
 from raysect.optical import World, translate
 from raysect.optical.material import Lambert
@@ -41,11 +43,8 @@ sphere = Sphere(
     material=Lambert(),
     parent=world
 )
-'''
-    },
-    "Set Up an Observer": {
-        "description": "Configure a pinhole camera to observe the scene.",
-        "code": '''
+''',
+    "Set Up an Observer": '''
 from raysect.optical.observer import PinholeCamera, RGBPipeline2D
 from raysect.optical import World, translate
 
@@ -63,11 +62,8 @@ camera = PinholeCamera(
 
 camera.observe()
 rgb.save("rendered_scene.png")
-'''
-    },
-    "Combine Elements": {
-        "description": "Combine source, material, and observer in a single scene.",
-        "code": '''
+''',
+    "Combine Elements": '''
 from raysect.primitive import Sphere, Box
 from raysect.optical import World, translate, Point3D
 from raysect.optical.material import Lambert, UniformSurfaceEmitter
@@ -106,17 +102,16 @@ camera = PinholeCamera(
 camera.observe()
 rgb.save("combined_scene.png")
 '''
-    }
 }
 
-# Sidebar for selection
-st.sidebar.title("Select Functionality")
-selection = st.sidebar.radio("Choose an example:", list(examples.keys()))
+st.sidebar.title("Toolbox")
 
-# Display selected example
-st.subheader(selection)
-st.markdown(examples[selection]["description"])
-st.code(textwrap.dedent(examples[selection]["code"]), language='python')
+# Render buttons for each example
+for label in examples.keys():
+    if st.sidebar.button(label):
+        with st.container():
+            st.subheader(label)
+            st.code(textwrap.dedent(examples[label]), language='python')
 
 st.markdown("---")
-st.markdown("For more detailed information, visit the [Raysect Documentation](https://www.raysect.org/).")
+st.markdown("Visit the [Raysect Documentation](https://www.raysect.org/) for deeper info.")
