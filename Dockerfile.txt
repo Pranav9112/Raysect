@@ -1,7 +1,7 @@
 # Use Python 3.10 base
 FROM python:3.10-slim
 
-# Install system dependencies for OpenGL and raysect rendering
+# Install system dependencies for OpenGL and raysect rendeering
 RUN apt-get update && apt-get install -y \
     build-essential \
     libgl1-mesa-glx \
